@@ -1,55 +1,53 @@
 package com.todolist.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.todolist.dto.TodoRequest;
 import com.todolist.entity.Todo;
 import com.todolist.service.TodoService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.util.List;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping({"/api/todos", "/todos"})
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TodoController {
 
     private final TodoService todoService;
 
-    public TodoController(TodoService todoService) {
-        this.todoService = todoService;
-    }
-
-    // 1. 전체 조회
     @GetMapping
-    public ResponseEntity<List<Todo>> getAllTodos() {
-        List<Todo> todos = todoService.getAllTodos();
-        return ResponseEntity.ok(todos); // 200 OK
+    public List<Todo> getAllTodos() {
+        return todoService.getAllTodos();
     }
 
-    // 2. 생성
     @PostMapping
-    public ResponseEntity<Todo> createTodo(@RequestBody @jakarta.validation.Valid TodoRequest request) {
-        if (request.getTodoNm() == null || request.getTodoNm().isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
-        Todo savedTodo = todoService.createTodo(request);
-        return ResponseEntity
-                .created(URI.create("/api/todos/" + savedTodo.getId())) // 201 Created + Location 헤더
-                .body(savedTodo);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Todo createTodo(@RequestBody @Valid TodoRequest request) {
+        return todoService.createTodo(request);
     }
 
-    // 3. 수정
     @PutMapping("/{id}")
-    public ResponseEntity<Todo> updateTodo(@PathVariable Long id, @RequestBody TodoRequest request) {
-        Todo updatedTodo = todoService.updateTodo(id, request);
-        return ResponseEntity.ok(updatedTodo); // 200 OK
+    public Todo updateTodo(@PathVariable Long id, @RequestBody @Valid TodoRequest request) {
+        return todoService.updateTodo(id, request);
     }
 
-    // 4. 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
-        return ResponseEntity.noContent().build(); // 204 No Content
     }
 }

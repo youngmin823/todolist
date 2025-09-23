@@ -84,7 +84,7 @@ function App() {
       description: form.description.trim(),
       priority: form.priority,
       achievement: form.achievement,
-      dueDate: form.dueDate ? new Date(form.dueDate).toISOString() : null
+      dueDate: form.dueDate ? `${form.dueDate}:00` : null
     };
 
     setSubmitting(true);
@@ -136,8 +136,7 @@ function App() {
   const toggleAchievement = async (todo) => {
     const nextAchievement = !todo.achievement;
     const payload = serialize(todo, {
-      achievement: nextAchievement,
-      dueDate: todo.dueDate ? new Date(todo.dueDate).toISOString() : null
+      achievement: nextAchievement
     });
     try {
       const { data } = await axios.put(`${API_BASE}/${todo.id}`, payload);

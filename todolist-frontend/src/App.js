@@ -5,8 +5,9 @@ import { format, isBefore, isToday, isTomorrow, parseISO } from 'date-fns';
 import TodoCard from './components/TodoCard';
 import './App.css';
 
-const API_BASE =
-  process.env.REACT_APP_TODO_API?.replace(/\/$/, '') || 'http://localhost:8080/api/todos';
+const rawApiBase =
+  process.env.REACT_APP_TODO_API || 'http://localhost:8081/api/todos';
+const API_BASE = rawApiBase.replace(/\/$/, '');
 
 const blankForm = {
   todoNm: '',

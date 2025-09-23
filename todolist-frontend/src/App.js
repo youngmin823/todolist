@@ -267,19 +267,17 @@ function App() {
               </div>
               <div className="field-group">
                 <label htmlFor="priority">우선순위</label>
-                <div className="priority-control">
-                  <input
-                    id="priority"
-                    type="range"
-                    min="0"
-                    max="5"
-                    step="1"
-                    name="priority"
-                    value={form.priority}
-                    onChange={handleInputChange}
-                  />
-                  <span className="priority-value">{form.priority}</span>
-                </div>
+                <input
+                  id="priority"
+                  type="number"
+                  min="0"
+                  max="5"
+                  step="1"
+                  name="priority"
+                  value={form.priority}
+                  onChange={handleInputChange}
+                  placeholder="0-5 사이의 숫자"
+                />
               </div>
             </div>
             {editingId ? (
@@ -301,20 +299,6 @@ function App() {
             </button>
           </form>
 
-          <div className="meta-actions">
-            <button className="ghost-button" type="button" onClick={fetchTodos}>
-              <FiRefreshCw /> 새로고침
-            </button>
-            <div className="search-bar">
-              <FiSearch />
-              <input
-                type="search"
-                placeholder="할 일을 검색해보세요"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-              />
-            </div>
-          </div>
           {error ? <p className="error-text">{error}</p> : null}
         </section>
 
@@ -343,6 +327,21 @@ function App() {
               >
                 완료
               </button>
+            </div>
+          </div>
+
+          <div className="meta-actions">
+            <button className="ghost-button" type="button" onClick={fetchTodos}>
+              <FiRefreshCw /> 새로고침
+            </button>
+            <div className="search-bar">
+              <FiSearch />
+              <input
+                type="search"
+                placeholder="할 일을 검색해보세요"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
             </div>
           </div>
 

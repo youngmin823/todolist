@@ -114,7 +114,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
   gap: clamp(28px, 5vw, 48px);
   align-items: start;
 }
@@ -174,6 +174,11 @@
   box-sizing: border-box;
 }
 
+/* 우선순위 숫자 입력 가독성 확보 */
+.field-group input[type='number'] {
+  min-width: 160px;
+}
+
 .field-group input:focus,
 .field-group textarea:focus {
   outline: none;
@@ -182,10 +187,11 @@
 }
 
 .field-group input[type='datetime-local'] {
-  min-width: 0;
+  min-width: 200px;
   font-variant-numeric: tabular-nums;
   color: white !important;
   opacity: 1;
+  padding: 16px 18px;
 }
 
 .field-group input[type='datetime-local']::-webkit-calendar-picker-indicator {
@@ -211,8 +217,42 @@
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+
+/* 날짜 프리셋 셀렉트 + 직접 입력을 한 줄에 배치 */
+.date-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.date-preset-select {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 16px;
+  padding: 16px 18px;
+  color: white;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 130px;
+  flex-shrink: 0;
+}
+
+.date-preset-select:focus {
+  outline: none;
+  border-color: rgba(129, 140, 248, 0.8);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+}
+
+.date-preset-select option {
+  background: rgba(15, 23, 42, 0.9);
+  color: white;
+}
+
+.date-input-group input[type='datetime-local'] {
+  flex: 1;
+  min-width: 180px;
 }
 
 

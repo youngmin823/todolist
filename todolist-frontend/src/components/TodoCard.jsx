@@ -8,10 +8,7 @@ import {
   FiTrash2
 } from 'react-icons/fi';
 import { format, isPast, isToday, parseISO } from 'date-fns';
-
-const priorityLabels = ['여유', '낮음', '보통', '중간', '높음', '최우선'];
-
-const getPriorityLabel = (priority) => priorityLabels[Math.min(Math.max(priority, 0), 5)];
+import { getPriorityLabel, normalizePriority } from '../utils/priority';
 
 const resolveDueInfo = (dueDate, achievement) => {
   if (!dueDate) {
@@ -36,7 +33,7 @@ const resolveDueInfo = (dueDate, achievement) => {
 
 function TodoCard({ todo, onEdit, onDelete, onToggle }) {
   const due = resolveDueInfo(todo.dueDate, todo.achievement);
-  const priority = Math.min(Math.max(todo.priority ?? 0, 0), 5);
+  const priority = normalizePriority(todo.priority);
 
   return (
     <article

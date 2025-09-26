@@ -161,13 +161,15 @@
 }
 
 .field-group input,
-.field-group textarea {
+.field-group textarea,
+.field-group select {
   background: rgba(15, 23, 42, 0.65);
   border: 1px solid rgba(99, 102, 241, 0.2);
   border-radius: 16px;
   padding: 16px 18px;
   color: white;
   font-size: 1rem;
+  font-family: inherit;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   resize: none;
   width: 100%;
@@ -175,10 +177,20 @@
 }
 
 .field-group input:focus,
-.field-group textarea:focus {
+.field-group textarea:focus,
+.field-group select:focus {
   outline: none;
   border-color: rgba(129, 140, 248, 0.8);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+}
+
+.field-group select {
+  cursor: pointer;
+  appearance: none;
+}
+
+.field-group textarea {
+  line-height: 1.6;
 }
 
 .field-group input[type='datetime-local'] {
@@ -213,6 +225,10 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+.form-grid > .field-group {
+  min-width: 0;
 }
 
 

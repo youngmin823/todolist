@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FiCheckCircle, FiPlus, FiRefreshCw, FiSearch } from 'react-icons/fi';
 import { format, isBefore, isToday, isTomorrow, parseISO } from 'date-fns';
 import TodoCard from './components/TodoCard';
+import { DEFAULT_PRIORITY, PRIORITY_SCALE, normalizePriority } from './utils/priority';
 import './App.css';
 
 const rawApiBase =
@@ -13,7 +14,7 @@ const blankForm = {
   todoNm: '',
   description: '',
   dueDate: '',
-  priority: 3,
+  priority: DEFAULT_PRIORITY,
   achievement: false
 };
 
@@ -42,7 +43,10 @@ function App() {
     setError('');
     try {
       const { data } = await axios.get(API_BASE);
-      setTodos(Array.isArray(data) ? data : []);
+      const normalized = Array.isArray(data)
+        ? data.map((item) => ({ ...item, priority: normalizePriority(item.priority) }))
+        : [];
+      setTodos(normalized);
     } catch (err) {
       console.error(err);
       setError('할 일 목록을 불러오지 못했어요. 서버 상태를 확인해주세요.');
@@ -62,13 +66,16 @@ function App() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setForm((prev) => ({ ...prev, [name]: name === 'priority' ? Number(value) : value }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === 'priority' ? normalizePriority(value) : value
+    }));
   };
 
   const serialize = (base, overrides = {}) => ({
     todoNm: overrides.todoNm ?? base.todoNm ?? '',
     description: overrides.description ?? base.description ?? '',
-    priority: overrides.priority ?? base.priority ?? 0,
+    priority: normalizePriority(overrides.priority ?? base.priority ?? DEFAULT_PRIORITY),
     dueDate: overrides.dueDate ?? base.dueDate ?? null,
     achievement: overrides.achievement ?? base.achievement ?? false
   });
@@ -83,7 +90,7 @@ function App() {
     const payload = {
       todoNm: form.todoNm.trim(),
       description: form.description.trim(),
-      priority: form.priority,
+      priority: normalizePriority(form.priority),
       achievement: form.achievement,
       dueDate: form.dueDate ? `${form.dueDate}:00` : null
     };
@@ -112,7 +119,7 @@ function App() {
     setForm({
       todoNm: todo.todoNm ?? '',
       description: todo.description ?? '',
-      priority: todo.priority ?? 0,
+      priority: normalizePriority(todo.priority),
       dueDate: formatForInput(todo.dueDate),
       achievement: Boolean(todo.achievement)
     });
@@ -168,8 +175,10 @@ function App() {
       if (a.achievement !== b.achievement) {
         return a.achievement ? 1 : -1;
       }
-      if (a.priority !== b.priority) {
-        return b.priority - a.priority;
+      const aPriority = normalizePriority(a.priority);
+      const bPriority = normalizePriority(b.priority);
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;
       }
       const aDue = a.dueDate ? new Date(a.dueDate).getTime() : Number.POSITIVE_INFINITY;
       const bDue = b.dueDate ? new Date(b.dueDate).getTime() : Number.POSITIVE_INFINITY;
@@ -267,17 +276,18 @@ function App() {
               </div>
               <div className="field-group">
                 <label htmlFor="priority">우선순위</label>
-                <input
+                <select
                   id="priority"
-                  type="number"
-                  min="0"
-                  max="5"
-                  step="1"
                   name="priority"
-                  value={form.priority}
+                  value={String(form.priority)}
                   onChange={handleInputChange}
-                  placeholder="0-5 사이의 숫자"
-                />
+                >
+                  {PRIORITY_SCALE.map((option) => (
+                    <option key={option.value} value={String(option.value)}>
+                      {option.value} - {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             {editingId ? (

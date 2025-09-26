@@ -274,7 +274,10 @@ function App() {
                   onChange={handleInputChange}
                   list="dateOptions"
                   onFocus={(e) => {
+<<<<<<< HEAD
                     // 일부 브라우저는 focus 시 자동으로 피커를 열지 않으므로, 가능한 경우 showPicker 사용
+=======
+>>>>>>> d3211699cbba3cb8e781b04406cdb5be8f5b548f
                     try {
                       if (typeof e.target.showPicker === 'function') {
                         e.target.showPicker();

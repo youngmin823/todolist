@@ -3,7 +3,12 @@ import axios from 'axios';
 import { FiCheckCircle, FiPlus, FiRefreshCw, FiSearch } from 'react-icons/fi';
 import { format, isBefore, isToday, isTomorrow, parseISO } from 'date-fns';
 import TodoCard from './components/TodoCard';
-import { DEFAULT_PRIORITY, PRIORITY_SCALE, normalizePriority } from './utils/priority';
+import {
+  DEFAULT_PRIORITY,
+  PRIORITY_SCALE,
+  normalizePriority,
+  withNormalizedPriority
+} from './utils/priority';
 import './App.css';
 
 const rawApiBase =
@@ -43,9 +48,7 @@ function App() {
     setError('');
     try {
       const { data } = await axios.get(API_BASE);
-      const normalized = Array.isArray(data)
-        ? data.map((item) => ({ ...item, priority: normalizePriority(item.priority) }))
-        : [];
+      const normalized = Array.isArray(data) ? data.map(withNormalizedPriority) : [];
       setTodos(normalized);
     } catch (err) {
       console.error(err);
@@ -100,10 +103,12 @@ function App() {
     try {
       if (editingId) {
         const { data } = await axios.put(`${API_BASE}/${editingId}`, payload);
-        setTodos((prev) => prev.map((todo) => (todo.id === editingId ? data : todo)));
+        const next = withNormalizedPriority(data);
+        setTodos((prev) => prev.map((todo) => (todo.id === editingId ? next : todo)));
       } else {
         const { data } = await axios.post(API_BASE, payload);
-        setTodos((prev) => [data, ...prev]);
+        const next = withNormalizedPriority(data);
+        setTodos((prev) => [next, ...prev]);
       }
       resetForm();
     } catch (err) {
@@ -115,13 +120,14 @@ function App() {
   };
 
   const handleEdit = (todo) => {
+    const normalizedTodo = withNormalizedPriority(todo);
     setEditingId(todo.id);
     setForm({
-      todoNm: todo.todoNm ?? '',
-      description: todo.description ?? '',
-      priority: normalizePriority(todo.priority),
-      dueDate: formatForInput(todo.dueDate),
-      achievement: Boolean(todo.achievement)
+      todoNm: normalizedTodo.todoNm ?? '',
+      description: normalizedTodo.description ?? '',
+      priority: normalizedTodo.priority,
+      dueDate: formatForInput(normalizedTodo.dueDate),
+      achievement: Boolean(normalizedTodo.achievement)
     });
   };
 
@@ -148,7 +154,8 @@ function App() {
     });
     try {
       const { data } = await axios.put(`${API_BASE}/${todo.id}`, payload);
-      setTodos((prev) => prev.map((item) => (item.id === todo.id ? data : item)));
+      const next = withNormalizedPriority(data);
+      setTodos((prev) => prev.map((item) => (item.id === todo.id ? next : item)));
     } catch (err) {
       console.error(err);
       setError('완료 상태를 업데이트하지 못했습니다.');

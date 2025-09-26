@@ -27,3 +27,8 @@ export const getPriorityLabel = (value) => {
   const matched = PRIORITY_SCALE.find((option) => option.value === normalized);
   return matched ? matched.label : PRIORITY_SCALE.find((option) => option.value === DEFAULT_PRIORITY).label;
 };
+
+export const withNormalizedPriority = (todo) => ({
+  ...todo,
+  priority: normalizePriority(todo?.priority)
+});

@@ -272,7 +272,20 @@ function App() {
                   name="dueDate"
                   value={form.dueDate}
                   onChange={handleInputChange}
+                  list="dateOptions"
+                  onFocus={(e) => {
+                    try {
+                      if (typeof e.target.showPicker === 'function') {
+                        e.target.showPicker();
+                      }
+                    } catch {}
+                  }}
                 />
+                <datalist id="dateOptions">
+                  <option value={format(new Date(Date.now() + 24 * 3600 * 1000), "yyyy-MM-dd'T'HH:mm")} label="내일" />
+                  <option value={format(new Date(Date.now() + 7 * 24 * 3600 * 1000), "yyyy-MM-dd'T'HH:mm")} label="일주일 후" />
+                  <option value={format(new Date(Date.now() + 30 * 24 * 3600 * 1000), "yyyy-MM-dd'T'HH:mm")} label="한 달 후" />
+                </datalist>
               </div>
               <div className="field-group">
                 <label htmlFor="priority">우선순위</label>
@@ -284,7 +297,7 @@ function App() {
                 >
                   {PRIORITY_SCALE.map((option) => (
                     <option key={option.value} value={String(option.value)}>
-                      {option.label}
+                      {option.value} - {option.label}
                     </option>
                   ))}
                 </select>

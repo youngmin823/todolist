@@ -88,7 +88,6 @@
   flex-shrink: 0;
 }
 
-<<<<<<< HEAD
 /* 우선순위 숫자 입력 가독성 확보 */
 .field-group input[type='number'] {
   min-width: 160px;
@@ -97,9 +96,7 @@
 .field-group input:focus,
 .field-group textarea:focus,
 .field-group select:focus {
-=======
 .date-preset-select:focus {
->>>>>>> d3211699cbba3cb8e781b04406cdb5be8f5b548f
   outline: none;
   border-color: rgba(129, 140, 248, 0.8);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
@@ -183,8 +180,7 @@
 .date-input-group input[type='datetime-local'] {
   flex: 1;
   min-width: 180px;
-=======
-=======
+
 .date-preset-select option {
   background: rgba(15, 23, 42, 0.9);
   color: white;
@@ -196,10 +192,10 @@
 }
 
 /* 원격 쪽 코드도 유지 */
->>>>>>> d3211699cbba3cb8e781b04406cdb5be8f5b548f
+ d3211699cbba3cb8e781b04406cdb5be8f5b548f
 .form-grid > .field-group {
   min-width: 0;
->>>>>>> 9423ae216ffbea7dc856fa3bb4a5fc853d132a2d
+ 9423ae216ffbea7dc856fa3bb4a5fc853d132a2d
 }
 
 /* ... 이하 나머지 스타일도 그대로 ... */

@@ -10,7 +10,7 @@
   --success: #34d399;
 }
 
-/* ... 기존 스타일 (생략 없음, 네가 준 그대로 유지) ... */
+/* ... 기존 스타일 유지 ... */
 
 .form-grid {
   display: grid;
@@ -88,6 +88,17 @@
   flex-shrink: 0;
 }
 
+.date-preset-select:focus {
+  outline: none;
+  border-color: rgba(129, 140, 248, 0.8);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+}
+
+.date-preset-select option {
+  background: rgba(15, 23, 42, 0.9);
+  color: white;
+}
+
 /* 우선순위 숫자 입력 가독성 확보 */
 .field-group input[type='number'] {
   min-width: 160px;
@@ -96,13 +107,11 @@
 .field-group input:focus,
 .field-group textarea:focus,
 .field-group select:focus {
-.date-preset-select:focus {
   outline: none;
   border-color: rgba(129, 140, 248, 0.8);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
 }
 
-<<<<<<< HEAD
 .field-group select {
   cursor: pointer;
   appearance: none;
@@ -141,61 +150,12 @@
   color: white;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-<<<<<<< HEAD
-/* 날짜 프리셋 셀렉트 + 직접 입력을 한 줄에 배치 */
-.date-input-group {
-  display: flex;
-  gap: 8px;
-}
-
-.date-preset-select {
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: 16px;
-  padding: 16px 18px;
-  color: white;
-  font-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  min-width: 130px;
-  flex-shrink: 0;
-}
-
-.date-preset-select:focus {
-  outline: none;
-  border-color: rgba(129, 140, 248, 0.8);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
-}
-
-.date-preset-select option {
-  background: rgba(15, 23, 42, 0.9);
-  color: white;
-}
-
-.date-input-group input[type='datetime-local'] {
-  flex: 1;
-  min-width: 180px;
-
-.date-preset-select option {
-  background: rgba(15, 23, 42, 0.9);
-  color: white;
-}
-
 .date-input-group input[type='datetime-local'] {
   flex: 1;
   min-width: 180px;
 }
 
-/* 원격 쪽 코드도 유지 */
- d3211699cbba3cb8e781b04406cdb5be8f5b548f
+/* form-grid 세부 */
 .form-grid > .field-group {
   min-width: 0;
- 9423ae216ffbea7dc856fa3bb4a5fc853d132a2d
 }
-
-/* ... 이하 나머지 스타일도 그대로 ... */
